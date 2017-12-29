@@ -1,0 +1,101 @@
+<!--detail.wxml-->
+<view class="container" wx:if="{{!loading}}">
+
+  <view class="movie">
+    <view class="preview">
+      <view class="mask" style="background-image: url({{preview.img}});"></view>
+      <view class="poster">
+        <image src="{{preview.img}}"></image>
+      </view>
+      <view class="brief">
+        <view class="name">{{preview.name}}</view>
+        <view class="name-en">{{preview.nameEn}}</view>
+        <view class="type">{{preview.type}}</view>
+        <view class="release">{{preview.releaseDate}}上映</view>
+        <view class="score">{{preview.overallRating}}分</view>
+        <view class="desc">{{preview.commentSpecial}}</view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-hd">故事简介</view>
+      <view class="card-bd">
+        <view class="story {{storyMore ? 'more' : ''}}">
+          {{preview.story}}
+          <text class="view-all" bindtap="viewStoryMore">更多</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-hd">参演人员</view>
+      <view class="card-bd">
+        <scroll-view scroll-x class="list cast-list">
+          <view class="item" wx:for="{{cast}}" wx:key="{{item.name}}">
+            <image src="{{item.img}}"></image>
+            <view class="name">{{item.name}}</view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-hd">影视剧照</view>
+      <view class="card-bd">
+        <scroll-view scroll-x class="list stage-list">
+          <view class="item" wx:for="{{stage}}" wx:key="{{item}}">
+            <image
+              src="{{item.preview}}"
+              data-view="{{item.view}}"
+              bindtap="viewStage">
+            </image>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-hd">精彩预告</view>
+      <view class="card-bd">
+        <scroll-view scroll-x class="list video-list">
+          <view class="item" wx:for="{{video}}" wx:key="{{item.image}}">
+            <image
+              src="{{item.image}}"
+              data-url="{{item.url}}"
+              bindtap="playVideo"
+              mode="widthFix">
+            </image>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-hd">观影感受</view>
+      <view class="card-bd">
+        <view class="list comment-list">
+          <view class="item" wx:for="{{comment}}" wx:key="{{item.caimg}}">
+            <view class="item-thumb">
+              <image src="{{item.caimg}}"></image>
+            </view>
+            <view class="item-main">
+              <view class="username">{{item.ca}}</view>
+              <view class="content">{{item.ce}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+  </view>
+
+</view>
+
+<view class="loading" wx:if="{{loading}}">
+  <view class="icon">
+    <view class="circle"></view>
+    <view class="circle"></view>
+    <view class="circle"></view>
+    <view class="circle"></view>
+  </view>
+</view>

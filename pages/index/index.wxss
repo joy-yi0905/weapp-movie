@@ -1,0 +1,50 @@
+/**index.wxss**/
+
+.list {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.list .item {
+  display: inline-block;
+  width: 200rpx;
+  text-align: center;
+}
+
+.list .item:not(:last-child) {
+  margin-right: 20rpx;
+}
+
+.list .item image {
+  displat: block;
+  width: 200rpx;
+  height: 280rpx;
+}
+
+.list .name {
+  font-size: 32rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list .desc {
+  margin-top: -10rpx;
+  font-size: 24rpx;
+}
+
+.list .desc .amount {
+  padding-right: 6rpx;
+  font-size: 30rpx;
+  color: #ea6f5a;
+}
+
+
+
+
+
+
+
+
+
+

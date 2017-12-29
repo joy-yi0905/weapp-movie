@@ -1,0 +1,8 @@
+<!--video.wxml-->
+<view class="container">
+
+  <view class="video-box">
+    <video id="video" src="{{url}}" controls autoplay custom-cache="{{false}}"></video>
+  </view>
+
+</view>

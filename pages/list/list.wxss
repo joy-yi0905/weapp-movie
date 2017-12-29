@@ -1,0 +1,77 @@
+/**list.wxss**/
+
+.list .item {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flex-box;
+  display: -webkit-flex;
+  display: flex;
+  box-sizing: border-box;
+  padding: 20rpx;
+  background: #fff;
+}
+
+.list .item::after {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  content: '';
+  background: #ccc;
+  -webkit-transform: scaleY(.5);
+  transform: scaleY(.5);
+}
+
+.list .item .item-thumb image {
+  width: 200rpx;
+  height: 280rpx;
+}
+
+.list .item .item-main {
+  width: calc(100% - 200rpx);
+  padding-left: 20rpx;
+  color: #666;
+  font-size: 28rpx;
+  line-height: 2.1;
+  box-sizing: border-box;
+}
+
+.list .item .item-main .name {
+  margin-top: -10rpx;
+  font-size: 40rpx;
+  font-weight: bolder;
+}
+
+.list .item .item-main .cast,
+.list .item .item-main .desc {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list .item .item-main .amount {
+  color: #ea6f5a;
+}
+
+.list .item .score {
+  position: absolute;
+  left: 20rpx;
+  top: 20rpx;
+  width: 64rpx;
+  height: 50rpx;
+  color: #fff;
+  text-align: center;
+  background: #ea6f5a;
+  box-sizing: border-box;
+  border-radius: 0 0 20rpx;
+}
+
+
+
+
+
+
+
+
+
