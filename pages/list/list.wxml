@@ -10,9 +10,9 @@
         <view class="item-main">
           <view class="name">{{item.tCn}}</view>
           <view class="director">导演：{{item.dN}}</view>
-          <view class="cast">主演：{{item.actors}}</view>
+          <view class="cast text-ellipsis">主演：{{item.actors}}</view>
           <view class="type">类型：{{item.movieType}}</view>
-          <view class="desc" wx:if="{{isHot}}">{{item.commonSpecial}}</view>
+          <view class="desc text-ellipsis" wx:if="{{isHot}}">{{item.commonSpecial}}</view>
           <view class="wanted" wx:if="{{!isHot}}"><text class="amount">{{item.wantedCount}}</text> 人想看</view>
         </view>
         <text class="score" wx:if="{{isHot}}">{{item.r}}</text>

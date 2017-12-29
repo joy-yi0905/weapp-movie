@@ -50,6 +50,12 @@ video {
   line-height: 1.8;
 }
 
+.text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .loading {
   position: absolute;
   left: 50%;
@@ -66,8 +72,8 @@ video {
   border-radius: 50%;
   box-sizing: border-box;
   opacity: 0.8;
-  -webkit-animation: rotate 3s linear 0s infinite;
-  animation: rotate 3s linear 0s infinite;
+  -webkit-animation: rotate 2s linear 0s infinite;
+  animation: rotate 2s linear 0s infinite;
 }
 
 .loading .icon::after {

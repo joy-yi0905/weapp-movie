@@ -8,12 +8,12 @@
         <image src="{{preview.img}}"></image>
       </view>
       <view class="brief">
-        <view class="name">{{preview.name}}</view>
+        <view class="name text-ellipsis">{{preview.name}}</view>
         <view class="name-en">{{preview.nameEn}}</view>
-        <view class="type">{{preview.type}}</view>
+        <view class="type text-ellipsis">{{preview.type}}</view>
         <view class="release">{{preview.releaseDate}}上映</view>
         <view class="score">{{preview.overallRating}}分</view>
-        <view class="desc">{{preview.commentSpecial}}</view>
+        <view class="desc text-ellipsis">{{preview.commentSpecial}}</view>
       </view>
     </view>
 
@@ -33,7 +33,7 @@
         <scroll-view scroll-x class="list cast-list">
           <view class="item" wx:for="{{cast}}" wx:key="{{item.name}}">
             <image src="{{item.img}}"></image>
-            <view class="name">{{item.name}}</view>
+            <view class="name text-ellipsis">{{item.name}}</view>
           </view>
         </scroll-view>
       </view>
@@ -71,7 +71,7 @@
     </view>
 
     <view class="card">
-      <view class="card-hd">观影感受</view>
+      <view class="card-hd">观影评价</view>
       <view class="card-bd">
         <view class="list comment-list">
           <view class="item" wx:for="{{comment}}" wx:key="{{item.caimg}}">

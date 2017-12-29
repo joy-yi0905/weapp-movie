@@ -10,7 +10,7 @@
       <scroll-view scroll-x class="list">
         <view class="item" bindtap="gotoDetail" wx:for="{{hotList}}" wx:key="{{item.img}}" data-id="{{item.id}}">
           <image src="{{item.img}}"></image>
-          <view class="name">{{item.tCn}}</view>
+          <view class="name text-ellipsis">{{item.tCn}}</view>
           <view class="desc">
             <text class="amount">{{item.r}}</text>分
           </view>
@@ -28,7 +28,7 @@
       <scroll-view scroll-x class="list">
         <view class="item" bindtap="gotoDetail" wx:for="{{comingList}}" wx:key="{{item.img}}" data-id="{{item.id}}">
           <image src="{{item.img}}"></image>
-          <view class="name">{{item.tCn}}</view>
+          <view class="name text-ellipsis">{{item.tCn}}</view>
           <view class="desc">
             <text class="amount">{{item.wantedCount}}</text>人想看
           </view>

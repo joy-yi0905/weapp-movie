@@ -43,13 +43,6 @@
   font-weight: bolder;
 }
 
-.list .item .item-main .cast,
-.list .item .item-main .desc {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .list .item .item-main .amount {
   color: #ea6f5a;
 }
