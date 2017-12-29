@@ -1,24 +1,20 @@
-//index.js
+//list.js
 const api = getApp().globalData.api;
 
 Page({
   data: {
-    hotList: [
+    list: [
       // {
       //   img: 'http://img5.mtime.cn/mt/2017/12/09/120449.13626053_1280X720X2.jpg',
       //   tCn: '芳华',
-      //   r: 7.7,
-      //   wantedCount: 3548
+      //   dN: '冯小刚',
+      //   actors: '黄轩 / 苗苗 / 钟楚曦 / 杨采钰黄轩 / 苗苗 / 钟楚曦 / 杨采钰黄轩 / 苗苗 / 钟楚曦 / 杨采钰',
+      //   movieType: '爱情 / 剧情 ／ 战争',
+      //   commonSpecial: '青春少男少女的文工团芳华岁月',
+      //   r: '7.7'
       // }
     ],
-    comingList: [
-      // {
-      //   image: 'http://img5.mtime.cn/mt/2017/12/09/120449.13626053_1280X720X2.jpg',
-      //   title: '芳华',
-      //   r: 7.7,
-      //   wantedCount: 3548
-      // }
-    ],
+    isHot: true,
     loading: true
   },
 
@@ -55,7 +51,7 @@ Page({
 
         this.formatImgSize(list, {attr: 'img', origin: '1280X720X2', clip: '200X720X2'}, (res) => {
           this.setData({
-            hotList: res.slice(0, 8),
+            list: res,
             loading: false
           });
         });
@@ -87,7 +83,7 @@ Page({
 
         this.formatImgSize(list, {attr: 'img', origin: '1280X720X2', clip: '200X720X2'}, (res) => {
           this.setData({
-            comingList: res.slice(0, 8),
+            list: res,
             loading: false
           });
         });
@@ -103,10 +99,7 @@ Page({
     });
   },
 
-  onLoad() {
-
-    this.loadHotList();
-    this.loadComingList();
+  onLoad: function (e) {
 
   }
 });

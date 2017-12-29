@@ -210,5 +210,11 @@
   white-space:normal;
 }
 
+.comment-more navigator {
+  margin-bottom: -20rpx;
+  padding-top: 20rpx;
+  padding-bottom: 20rpx;
+  text-align: center;
+}
 
 

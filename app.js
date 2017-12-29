@@ -6,6 +6,8 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
 
+    console.log('x');
+
     // 登录
     wx.login({
       success: res => {
@@ -34,6 +36,10 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    api: {
+      m: 'https://api-m.mtime.cn',
+      mTicket: 'https://ticket-api-m.mtime.cn'
+    }
   }
 })

@@ -71,7 +71,7 @@
     </view>
 
     <view class="card">
-      <view class="card-hd">观影评价</view>
+      <view class="card-hd">观影评论</view>
       <view class="card-bd">
         <view class="list comment-list">
           <view class="item" wx:for="{{comment}}" wx:key="{{item.caimg}}">
@@ -84,6 +84,7 @@
             </view>
           </view>
         </view>
+        <view class="comment-more"><navigator url="../comment/comment?type=hot">更多评价>></navigator></view>
       </view>
     </view>
 

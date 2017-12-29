@@ -1,6 +1,5 @@
 //detail.js
-
-const app = getApp();
+const api = getApp().globalData.api;
 
 Page({
   data: {
@@ -96,7 +95,7 @@ Page({
   loadDetail() {
 
     wx.request({
-      url: 'https://ticket-api-m.mtime.cn/movie/detail.api',
+      url: `${api.mTicket}/movie/detail.api`,
       data: {
         locationId: 290,
         movieId: this.data.id
@@ -131,7 +130,7 @@ Page({
 
   loadStage() {
     wx.request({
-      url: 'https://api-m.mtime.cn/Movie/ImageAll.api',
+      url: `${api.m}/Movie/ImageAll.api`,
       data: {
         movieId: this.data.id
       },
@@ -160,7 +159,7 @@ Page({
 
   loadVideo() {
     wx.request({
-      url: 'https://api-m.mtime.cn/Movie/Video.api',
+      url: `${api.m}/Movie/Video.api`,
       data: {
         pageIndex: 1,
         movieId: this.data.id
@@ -187,7 +186,7 @@ Page({
 
   loadComment() {
     wx.request({
-      url: 'https://api-m.mtime.cn/Showtime/HotMovieComments.api',
+      url: `${api.m}/Showtime/HotMovieComments.api`,
       data: {
         pageIndex: 1,
         movieId: this.data.id
@@ -203,7 +202,7 @@ Page({
   },
 
   onLoad(e) {
-    const id = e.id;
+    const id = e.id || 240424;
 
     wx.setNavigationBarTitle({
       title: '电影详情'
@@ -215,7 +214,5 @@ Page({
     this.loadStage();
     this.loadVideo();
     this.loadComment();
-
-    console.log(e);
   }
 });

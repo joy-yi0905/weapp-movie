@@ -1,6 +1,5 @@
 //list.js
-//获取应用实例
-const app = getApp()
+const api = getApp().globalData.api;
 
 Page({
   data: {
@@ -37,7 +36,7 @@ Page({
   loadHotList() {
 
     wx.request({
-      url: 'https://api-m.mtime.cn/Showtime/LocationMovies.api',
+      url: `${api.m}/Showtime/LocationMovies.api`,
       data: {
         locationId: 290
       },
@@ -63,7 +62,7 @@ Page({
   loadComingList() {
 
     wx.request({
-      url: 'https://api-m.mtime.cn/Movie/MovieComingNew.api',
+      url: `${api.m}/Movie/MovieComingNew.api`,
       data: {
         locationId: 290
       },
