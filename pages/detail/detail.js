@@ -92,7 +92,7 @@ Page({
     });
   },
 
-  loadDetail() {
+  loadDetail(callback) {
 
     wx.request({
       url: `${api.mTicket}/movie/detail.api`,
@@ -124,6 +124,8 @@ Page({
             loading: false
           });
         });
+
+        typeof callback === 'function' && callback();
       }
     });
   },
@@ -202,15 +204,15 @@ Page({
   },
 
   onLoad(e) {
-    const id = e.id || 240424;
-
-    wx.setNavigationBarTitle({
-      title: '电影详情'
-    });
+    const id = e.id;
 
     this.setData({id});
 
-    this.loadDetail();
+    this.loadDetail(() => {
+      wx.setNavigationBarTitle({
+        title: this.data.preview.name
+      });
+    });
     this.loadStage();
     this.loadVideo();
     this.loadComment();
