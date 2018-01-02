@@ -8,7 +8,7 @@
           <image src="{{item.img}}"></image>
         </view>
         <view class="item-main">
-          <view class="name">{{item.tCn}}</view>
+          <view class="name text-ellipsis">{{item.tCn}}</view>
           <view class="director">导演：{{item.dN}}</view>
           <view class="cast text-ellipsis">主演：{{item.actors}}</view>
           <view class="type">类型：{{item.movieType}}</view>
@@ -23,7 +23,7 @@
 </view>
 
 <view class="loading" wx:if="{{loading}}">
-  <view class="icon">
+  <view class="loading-icon">
     <view class="circle"></view>
     <view class="circle"></view>
     <view class="circle"></view>

@@ -49,9 +49,12 @@ Page({
       // {
       //   caimg: 'http://img2.mtime.cn/images/default/head.gif',
       //   ca: 'M_1505181628072419891',
-      //   ce: '根本不符合历史，甚至在丑化历史。'
+      //   ce: '根本不符合历史，甚至在丑化历史。',
+      //   cd: 1514831744
       // }
     ],
+    commentShowNum: 10,
+    isCommentMore: false,
     loading: true
   },
 
@@ -68,6 +71,27 @@ Page({
     }
 
     callback(list);
+  },
+
+  fillZero(str, n = 2) {
+    str = '' + str;
+
+    while(str.length < n){
+      str = '0' + str;
+    }
+
+    return str;
+  },
+
+  formateDate(timestamp) {
+    const date = new Date(timestamp/1);
+
+    const MM = date.getMonth() + 1;
+    const DD = date.getDay();
+    const hh = date.getHours();
+    const mm = date.getMinutes();
+
+    return `${this.fillZero(MM)}-${this.fillZero(DD)} ${this.fillZero(hh)}:${this.fillZero(mm)}`;
   },
 
   viewStoryMore() {
@@ -173,9 +197,7 @@ Page({
 
         video = video.filter((item) => {
           return item.type === 0;
-        });
-
-        video = video.slice(0, 5);
+        }).slice(0, 5);
 
         this.formatImgSize(video, {attr: 'image', origin: '235X132X4', clip: '235X132X2'}, (res) => {
           this.setData({
@@ -196,15 +218,28 @@ Page({
       success: res => {
         // console.log('评论', res.data);
 
-        let comment = res.data.data.cts.slice(0, 10);
+        let newComment = res.data.data.cts;
 
-        this.setData({comment});
+        let {comment, commentShowNum, isCommentMore} = this.data;
+
+        if (newComment.length >= commentShowNum) {
+          isCommentMore = true;
+          newComment = newComment.slice(0, commentShowNum);
+        }
+
+        newComment.forEach((item) => {
+          item.cd = item.cd && this.formateDate(item.cd + '000' - (8 * 3600 * 1000));
+        });
+
+        comment = comment.concat(newComment);
+
+        this.setData({comment, isCommentMore});
       }
     });
   },
 
   onLoad(e) {
-    const id = e.id;
+    const id = e.id || 236404;
 
     this.setData({id});
 
@@ -213,6 +248,7 @@ Page({
         title: this.data.preview.name
       });
     });
+
     this.loadStage();
     this.loadVideo();
     this.loadComment();

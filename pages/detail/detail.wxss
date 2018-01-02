@@ -164,6 +164,11 @@
   display: none;
 }
 
+.comment-list {
+  font-size:26rpx;
+  line-height:1.8;
+}
+
 .comment-list .item {
   position: relative;
   display: -webkit-box;
@@ -189,13 +194,13 @@
 }
 
 .comment-list .item .item-thumb {
-  width: 100rpx;
+  width: 80rpx;
   margin-right: 20rpx;
 }
 
 .comment-list .item .item-thumb image {
-  width: 100rpx;
-  height: 100rpx;
+  width: 80rpx;
+  height: 80rpx;
   border-radius: 50%;
 }
 
@@ -205,15 +210,21 @@
 
 .comment-list .item .content {
   padding-top: 10rpx;
+  padding-bottom: 10rpx;
   font-size: 30rpx;
   line-height: 1.8;
   white-space:normal;
+}
+
+.comment-list .item .date {
+  color: #888;
 }
 
 .comment-more navigator {
   margin-bottom: -20rpx;
   padding-top: 20rpx;
   padding-bottom: 20rpx;
+  color: #ea6f5a;
   text-align: center;
 }
 

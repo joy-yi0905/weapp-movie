@@ -1,17 +1,28 @@
-/**list.wxss**/
+/**comment.wxss**/
 
-.list .item {
+.comment {
+  padding: 20rpx;
+  background: #fff;
+}
+
+.comment-list {
+  font-size:26rpx;
+  line-height:1.8;
+}
+
+.comment-list .item {
   position: relative;
   display: -webkit-box;
   display: -ms-flex-box;
   display: -webkit-flex;
   display: flex;
   box-sizing: border-box;
-  padding: 20rpx;
-  background: #fff;
+  width: 100%;
+  padding-top: 20rpx;
+  padding-bottom: 14rpx;
 }
 
-.list .item::after {
+.comment-list .item::after {
   position: absolute;
   left: 0;
   bottom: 0;
@@ -23,44 +34,50 @@
   transform: scaleY(.5);
 }
 
-.list .item .item-thumb image {
-  width: 200rpx;
-  height: 280rpx;
+.comment-list .item .item-thumb {
+  width: 80rpx;
+  margin-right: 20rpx;
 }
 
-.list .item .item-main {
-  width: calc(100% - 200rpx);
-  padding-left: 20rpx;
-  color: #666;
-  font-size: 28rpx;
-  line-height: 2.1;
-  box-sizing: border-box;
+.comment-list .item .item-thumb image {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
 }
 
-.list .item .item-main .name {
-  margin-top: -10rpx;
-  font-size: 40rpx;
-  font-weight: bolder;
-}
-
-.list .item .item-main .amount {
+.comment-list .item .username {
   color: #ea6f5a;
 }
 
-.list .item .score {
-  position: absolute;
-  left: 20rpx;
-  top: 20rpx;
-  width: 64rpx;
-  height: 50rpx;
-  color: #fff;
-  text-align: center;
-  background: #ea6f5a;
-  box-sizing: border-box;
-  border-radius: 0 0 20rpx;
+.comment-list .item .content {
+  padding-top: 10rpx;
+  padding-bottom: 10rpx;
+  font-size: 30rpx;
+  line-height: 1.8;
+  white-space:normal;
 }
 
+.comment-list .item .date {
+  color: #888;
+}
 
+.scroll-loading {
+  padding-top: 20rpx;
+  -webkit-transform: scale(.6);
+  transform: scale(.6);
+}
+
+.scroll-loading .loading-icon {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.loading-tips {
+  color: #888;
+  font-size: 30rpx;
+  line-height: 3;
+  text-align: center;
+}
 
 
 

@@ -1,105 +1,118 @@
-//list.js
+//comment.js
 const api = getApp().globalData.api;
 
 Page({
   data: {
-    list: [
+    id: '',
+    comment: [
       // {
-      //   img: 'http://img5.mtime.cn/mt/2017/12/09/120449.13626053_1280X720X2.jpg',
-      //   tCn: '芳华',
-      //   dN: '冯小刚',
-      //   actors: '黄轩 / 苗苗 / 钟楚曦 / 杨采钰黄轩 / 苗苗 / 钟楚曦 / 杨采钰黄轩 / 苗苗 / 钟楚曦 / 杨采钰',
-      //   movieType: '爱情 / 剧情 ／ 战争',
-      //   commonSpecial: '青春少男少女的文工团芳华岁月',
-      //   r: '7.7'
+      //   caimg: 'http://img2.mtime.cn/images/default/head.gif',
+      //   ca: 'M_1505181628072419891',
+      //   ce: '根本不符合历史，甚至在丑化历史。',
+      //   cd: 1514831744
       // }
     ],
-    isHot: true,
-    loading: true
+    pageIndex: 1,
+    commentLoadNum: 20,
+    loadingComment: false,
+    loadingCommentMore: false,
+    loading: true,
   },
 
-  formatImgSize(list, img, callback) {
+  fillZero(str, n = 2) {
+    str = '' + str;
 
-    const regExp = new RegExp(img.origin, 'g');
-
-    if (list[img.attr]) { // object
-      list[img.attr] = list[img.attr].replace(regExp, img.clip);
-    } else {
-      list.forEach((value, index) => {
-        value[img.attr] = value[img.attr] && value[img.attr].replace(regExp, img.clip);
-      });
+    while(str.length < n){
+      str = '0' + str;
     }
 
-    callback(list);
+    return str;
   },
 
-  loadHotList() {
+  formateDate(timestamp) {
+    const date = new Date(timestamp/1);
 
+    const MM = date.getMonth() + 1;
+    const DD = date.getDay();
+    const hh = date.getHours();
+    const mm = date.getMinutes();
+
+    return `${this.fillZero(MM)}-${this.fillZero(DD)} ${this.fillZero(hh)}:${this.fillZero(mm)}`;
+  },
+
+  getRect(selector, callback) {
+    wx.createSelectorQuery().select(selector).boundingClientRect((rect) => {
+      callback(rect);
+    }).exec();
+  },
+
+  loadComment() {
     wx.request({
-      url: `${api.m}/Showtime/LocationMovies.api`,
+      url: `${api.m}/Showtime/HotMovieComments.api`,
       data: {
-        locationId: 290
+        pageIndex: this.data.pageIndex,
+        movieId: this.data.id
       },
       success: res => {
-        // console.log('正在热映', res.data);
+        // console.log('评论', res.data);
 
-        let list = res.data.ms;
+        let newComment = res.data.data.cts;
 
-        list.forEach((value, index) => {
-          value.r = value.r === -1 ?  0 : value.r;
+        let {comment, pageIndex, commentLoadNum, loadingComment, loadingCommentMore} = this.data;
+
+        newComment.forEach((item, index) => {
+          item.cd = item.cd && this.formateDate(item.cd + '000' - (8 * 3600 * 1000));
+          item.id = `item-${(pageIndex - 1) * 20 + (index + 1)}`;
         });
 
-        this.formatImgSize(list, {attr: 'img', origin: '1280X720X2', clip: '200X720X2'}, (res) => {
-          this.setData({
-            list: res,
-            loading: false
+        loadingComment = false;
+
+        if (newComment.length === 0) {
+          loadingCommentMore = false;
+        } else {
+          loadingCommentMore = true;
+          pageIndex++;
+        }
+
+        comment = comment.concat(newComment);
+
+        (this.data.pageIndex === 1) &&
+        setTimeout(() => {
+          this.getRect('#item-10', (rect) => {
+            wx.pageScrollTo({
+              scrollTop: rect.top
+            });
           });
-        });
+        }, 200);
+
+        this.setData({comment, loadingCommentMore, pageIndex, loadingComment, loading: false});
+
       }
     });
   },
 
-  loadComingList() {
+  onReachBottom() {
+    let {loadingComment, loadingCommentMore} = this.data;
 
-    wx.request({
-      url: `${api.m}/Movie/MovieComingNew.api`,
-      data: {
-        locationId: 290
-      },
-      success: res => {
-        // console.log('即将上映', res.data);
+    if (!loadingComment && loadingCommentMore) {
 
-        let list = res.data.moviecomings;
+      this.setData({loadingComment: true});
 
-        list.forEach((value, index) => {
-          value.r = value.r === -1 ?  0 : value.r;
-          value.img = value.image;
-          value.tCn = value.title;
-          value.dN = value.director;
-          value.actors = `${value.actor1}${value.actor2 ? ' / ' : ''}${value.actor2 || ''}`;
-          value.movieType = value.type;
-          value.commonSpecial = '';
-        });
-
-        this.formatImgSize(list, {attr: 'img', origin: '1280X720X2', clip: '200X720X2'}, (res) => {
-          this.setData({
-            list: res,
-            loading: false
-          });
-        });
-      }
-    });
-  },
-
-  gotoDetail(e) {
-    const id = e.currentTarget.dataset.id;
-
-    wx.navigateTo({
-      url: `../detail/detail?id=${id}`
-    });
+      this.loadComment();
+    }
   },
 
   onLoad: function (e) {
+    const id = e.id || 236404;
 
+    console.log(e);
+
+    this.setData({id});
+
+    wx.setNavigationBarTitle({
+      title: `观影评论 - ${e.name}`
+    });
+
+    this.loadComment();
   }
 });

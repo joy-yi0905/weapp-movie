@@ -1,29 +1,34 @@
-<!--list.wxml-->
+<!--comment.wxml-->
 <view class="container" wx:if="{{!loading}}">
 
-  <view class="movie-type-group">
-    <view class="list">
-      <view class="item" bindtap="gotoDetail" wx:for="{{list}}" wx:key="{{item.img}}" data-id="{{item.id}}">
+  <view class="comment">
+    <view class="list comment-list">
+      <view class="item" wx:for="{{comment}}" wx:key="{{item.caimg}}" id="{{item.id}}">
         <view class="item-thumb">
-          <image src="{{item.img}}"></image>
+          <image src="{{item.caimg}}"></image>
         </view>
         <view class="item-main">
-          <view class="name">{{item.tCn}}</view>
-          <view class="director">导演：{{item.dN}}</view>
-          <view class="cast text-ellipsis">主演：{{item.actors}}</view>
-          <view class="type">类型：{{item.movieType}}</view>
-          <view class="desc text-ellipsis" wx:if="{{isHot}}">{{item.commonSpecial}}</view>
-          <view class="wanted" wx:if="{{!isHot}}"><text class="amount">{{item.wantedCount}}</text> 人想看</view>
+          <view class="username">{{item.ca}}</view>
+          <view class="content">{{item.ce}}</view>
+          <text class="date">{{item.cd}}</text>
         </view>
-        <text class="score" wx:if="{{isHot}}">{{item.r}}</text>
       </view>
     </view>
+    <view class="scroll-loading" wx:if="{{loadingCommentMore}}">
+      <view class="loading-icon">
+        <view class="circle"></view>
+        <view class="circle"></view>
+        <view class="circle"></view>
+        <view class="circle"></view>
+      </view>
+    </view>
+    <view class="loading-tips" wx:else>没有更多了...</view>
   </view>
 
 </view>
 
 <view class="loading" wx:if="{{loading}}">
-  <view class="icon">
+  <view class="loading-icon">
     <view class="circle"></view>
     <view class="circle"></view>
     <view class="circle"></view>

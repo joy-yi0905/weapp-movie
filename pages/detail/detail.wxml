@@ -81,10 +81,11 @@
             <view class="item-main">
               <view class="username">{{item.ca}}</view>
               <view class="content">{{item.ce}}</view>
+              <text class="date">{{item.cd}}</text>
             </view>
           </view>
         </view>
-        <view class="comment-more"><navigator url="../comment/comment?type=hot">更多评价>></navigator></view>
+        <view class="comment-more" wx:if="{{isCommentMore}}"><navigator url="../comment/comment?type=hot&id={{id}}&name={{preview.name}}">更多评价>></navigator></view>
       </view>
     </view>
 
@@ -93,7 +94,7 @@
 </view>
 
 <view class="loading" wx:if="{{loading}}">
-  <view class="icon">
+  <view class="loading-icon">
     <view class="circle"></view>
     <view class="circle"></view>
     <view class="circle"></view>

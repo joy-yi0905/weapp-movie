@@ -40,7 +40,7 @@
 </view>
 
 <view class="loading" wx:if="{{loading}}">
-  <view class="icon">
+  <view class="loading-icon">
     <view class="circle"></view>
     <view class="circle"></view>
     <view class="circle"></view>
