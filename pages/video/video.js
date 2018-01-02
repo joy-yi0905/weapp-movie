@@ -1,13 +1,16 @@
 
 Page({
   data: {
+    name: '',
     url: ''
   },
   onLoad: function (e) {
+    const {name, url} = e;
+
     wx.setNavigationBarTitle({
-      title: '精彩预告'
+      title: `精彩预告 - ${name}`
     });
 
-    this.setData({url: e.url});
+    this.setData({url, name});
   }
 });

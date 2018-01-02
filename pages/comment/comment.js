@@ -103,9 +103,7 @@ Page({
   },
 
   onLoad: function (e) {
-    const id = e.id || 236404;
-
-    console.log(e);
+    const id = e.id;
 
     this.setData({id});
 

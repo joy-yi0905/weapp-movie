@@ -112,7 +112,7 @@ Page({
     const videoUrl = e.target.dataset.url;
 
     wx.navigateTo({
-      url: '../video/video?url=' + videoUrl
+      url: `../video/video?url=${videoUrl}&name=${this.data.preview.name}`
     });
   },
 
@@ -239,7 +239,7 @@ Page({
   },
 
   onLoad(e) {
-    const id = e.id || 236404;
+    const id = e.id;
 
     this.setData({id});
 
