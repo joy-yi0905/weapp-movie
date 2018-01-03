@@ -1,19 +1,62 @@
-const formatTime = date => {
-  const year = date.getFullYear()
-  const month = date.getMonth() + 1
-  const day = date.getDate()
-  const hour = date.getHours()
-  const minute = date.getMinutes()
-  const second = date.getSeconds()
+const formatTime = timestamp => {
+  const date = new Date(timestamp/1);
 
-  return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
-}
+  const MM = date.getMonth() + 1;
+  const DD = date.getDate();
+  const hh = date.getHours();
+  const mm = date.getMinutes();
 
-const formatNumber = n => {
-  n = n.toString()
-  return n[1] ? n : '0' + n
-}
+  return [MM, DD].map(fillZero).join('-') + ' ' + [hh, mm].map(fillZero).join(':');
+};
 
-module.exports = {
-  formatTime: formatTime
-}
+const fillZero = str => {
+  str = '' + str;
+
+  while(str.length < 2){
+    str = '0' + str;
+  }
+
+  return str;
+};
+
+const formatImgSize = (list, img, callback) => {
+
+  const regExp = new RegExp(img.origin, 'g');
+
+  if (list[img.attr]) { // object
+    list[img.attr] = list[img.attr].replace(regExp, img.clip);
+  } else {
+    list.forEach((value, index) => {
+      value[img.attr] = value[img.attr] && value[img.attr].replace(regExp, img.clip);
+    });
+  }
+
+  callback(list);
+};
+
+const request = ({url, data}) => {
+  return new Promise((reslove, reject) => {
+    wx.request({
+      url,
+      data,
+      success: res => {
+        reslove(res.data);
+      },
+      fail: err => {
+        wx.showModal({
+          content: '接口请求出错了，请稍后再试...',
+          showCancel: false
+        });
+
+        reject(err);
+      }
+    });
+  });
+};
+
+export {
+  formatTime,
+  formatImgSize,
+  request
+};
+

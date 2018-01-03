@@ -1,5 +1,7 @@
 //index.js
-const api = getApp().globalData.api;
+
+import {formatImgSize} from '../../utils/util';
+import service from '../../utils/service';
 
 Page({
   data: {
@@ -22,76 +24,41 @@ Page({
     loading: true
   },
 
-  formatImgSize(list, img, callback) {
+  formatHotList(data) {
+    // console.log('正在热映', data);
 
-    const regExp = new RegExp(img.origin, 'g');
+    let list = data.ms;
 
-    if (list[img.attr]) { // object
-      list[img.attr] = list[img.attr].replace(regExp, img.clip);
-    } else {
-      list.forEach((value, index) => {
-        value[img.attr] = value[img.attr] && value[img.attr].replace(regExp, img.clip);
+    list.forEach(value => {
+      value.r = value.r === -1 ?  0 : value.r;
+    });
+
+    formatImgSize(list, {attr: 'img', origin: '1280X720X2', clip: '200X720X2'}, res => {
+      this.setData({
+        hotList: res.slice(0, 8)
       });
-    }
-
-    callback(list);
-  },
-
-  loadHotList() {
-
-    wx.request({
-      url: `${api.m}/Showtime/LocationMovies.api`,
-      data: {
-        locationId: 290
-      },
-      success: res => {
-        // console.log('正在热映', res.data);
-
-        let list = res.data.ms;
-
-        list.forEach((value, index) => {
-          value.r = value.r === -1 ?  0 : value.r;
-        });
-
-        this.formatImgSize(list, {attr: 'img', origin: '1280X720X2', clip: '200X720X2'}, (res) => {
-          this.setData({
-            hotList: res.slice(0, 8),
-            loading: false
-          });
-        });
-      }
     });
   },
 
-  loadComingList() {
+  formatComingList(data) {
+    // console.log('即将上映', data);
 
-    wx.request({
-      url: `${api.m}/Movie/MovieComingNew.api`,
-      data: {
-        locationId: 290
-      },
-      success: res => {
-        // console.log('即将上映', res.data);
+    let list = data.moviecomings;
 
-        let list = res.data.moviecomings;
+    list.forEach(value => {
+      value.r = value.r === -1 ?  0 : value.r;
+      value.img = value.image;
+      value.tCn = value.title;
+      value.dN = value.director;
+      value.actors = `${value.actor1}${value.actor2 ? ' / ' : ''}${value.actor2 || ''}`;
+      value.movieType = value.type;
+      value.commonSpecial = '';
+    });
 
-        list.forEach((value, index) => {
-          value.r = value.r === -1 ?  0 : value.r;
-          value.img = value.image;
-          value.tCn = value.title;
-          value.dN = value.director;
-          value.actors = `${value.actor1}${value.actor2 ? ' / ' : ''}${value.actor2 || ''}`;
-          value.movieType = value.type;
-          value.commonSpecial = '';
-        });
-
-        this.formatImgSize(list, {attr: 'img', origin: '1280X720X2', clip: '200X720X2'}, (res) => {
-          this.setData({
-            comingList: res.slice(0, 8),
-            loading: false
-          });
-        });
-      }
+    formatImgSize(list, {attr: 'img', origin: '1280X720X2', clip: '200X720X2'}, res => {
+      this.setData({
+        comingList: res.slice(0, 8)
+      });
     });
   },
 
@@ -99,14 +66,27 @@ Page({
     const id = e.currentTarget.dataset.id;
 
     wx.navigateTo({
-      url: `../detail/detail?id=${id}`
+      url: `../detail/detail?movieId=${id}`
     });
   },
 
   onLoad() {
 
-    this.loadHotList();
-    this.loadComingList();
+    service.getHotList({
+      locationId: 290
+    })
+    .then(res => {
+      this.formatHotList(res);
+
+      return service.getComingList({
+        locationId: 290
+      });
+    })
+    .then(res => {
+      this.formatComingList(res);
+
+      this.setData({loading: false});
+    });
 
   }
 });

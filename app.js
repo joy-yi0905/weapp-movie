@@ -34,10 +34,6 @@ App({
     })
   },
   globalData: {
-    userInfo: null,
-    api: {
-      m: 'https://api-m.mtime.cn',
-      mTicket: 'https://ticket-api-m.mtime.cn'
-    }
+    userInfo: null
   }
 })

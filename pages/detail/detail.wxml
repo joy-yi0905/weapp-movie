@@ -85,7 +85,7 @@
             </view>
           </view>
         </view>
-        <view class="comment-more" wx:if="{{isCommentMore}}"><navigator url="../comment/comment?type=hot&id={{id}}&name={{preview.name}}">更多评价>></navigator></view>
+        <view class="comment-more" wx:if="{{isCommentMore}}"><navigator url="../comment/comment?type=hot&movieId={{movieId}}&name={{preview.name}}">更多评价>></navigator></view>
       </view>
     </view>
 

@@ -1,9 +1,11 @@
 //detail.js
-const api = getApp().globalData.api;
+
+import {formatTime, formatImgSize} from '../../utils/util';
+import service from '../../utils/service';
 
 Page({
   data: {
-    id: '',
+    movieId: '',
     preview: {
       // img: 'http://img5.mtime.cn/mt/2017/12/09/120449.13626053_1280X720X2.jpg',
       // name: '芳华',
@@ -58,42 +60,6 @@ Page({
     loading: true
   },
 
-  formatImgSize(list, img, callback) {
-
-    const regExp = new RegExp(img.origin, 'g');
-
-    if (list[img.attr]) { // object
-      list[img.attr] = list[img.attr].replace(regExp, img.clip);
-    } else {
-      list.forEach((value, index) => {
-        value[img.attr] = value[img.attr] && value[img.attr].replace(regExp, img.clip);
-      });
-    }
-
-    callback(list);
-  },
-
-  fillZero(str, n = 2) {
-    str = '' + str;
-
-    while(str.length < n){
-      str = '0' + str;
-    }
-
-    return str;
-  },
-
-  formateDate(timestamp) {
-    const date = new Date(timestamp/1);
-
-    const MM = date.getMonth() + 1;
-    const DD = date.getDay();
-    const hh = date.getHours();
-    const mm = date.getMinutes();
-
-    return `${this.fillZero(MM)}-${this.fillZero(DD)} ${this.fillZero(hh)}:${this.fillZero(mm)}`;
-  },
-
   viewStoryMore() {
     this.setData({storyMore: true});
   },
@@ -116,141 +82,132 @@ Page({
     });
   },
 
-  loadDetail(callback) {
+  formatDetail(data, callback) {
+    // console.log('详情', data);
 
-    wx.request({
-      url: `${api.mTicket}/movie/detail.api`,
-      data: {
-        locationId: 290,
-        movieId: this.data.id
-      },
-      success: res => {
-        // console.log('详情', res.data);
+    let preview = data.data.basic;
+    let cast = [];
 
-        let preview = res.data.data.basic;
-        let cast = [];
+    preview.type = preview.type.join(' / ');
+    preview.releaseDate = preview.releaseDate.replace(/(\d{4})(\d{2})/, '$1-$2-');
+    preview.overallRating = preview.overallRating === -1 ?  0 : preview.overallRating;
 
-        preview.type = preview.type.join(' / ');
-        preview.releaseDate = preview.releaseDate.replace(/(\d{4})(\d{2})/, '$1-$2-');
+    cast[0] = preview.director;
+    cast = cast.concat(preview.actors).slice(0, 10);
 
-        cast[0] = preview.director;
-        cast = cast.concat(preview.actors).slice(0, 10);
-
-        this.formatImgSize(preview, {attr: 'img', origin: '1280X720X2', clip: '200X720X2'}, (res) => {
-          this.setData({
-            preview: res
-          });
-        });
-
-        this.formatImgSize(cast, {attr: 'img', origin: '1280X720X2', clip: '80X1000X2'}, (res) => {
-          this.setData({
-            cast: res,
-            loading: false
-          });
-        });
-
-        typeof callback === 'function' && callback();
-      }
-    });
-  },
-
-  loadStage() {
-    wx.request({
-      url: `${api.m}/Movie/ImageAll.api`,
-      data: {
-        movieId: this.data.id
-      },
-      success: res => {
-        // console.log('剧照', res.data);
-
-        let stage = res.data.images.slice(0, 100);
-        let stageView = [];
-
-        stage = stage.filter((item) => {
-          return item.imageSubtype === 6001;
-        });
-
-        stage = stage.slice(0, 10);
-
-        stage.forEach((value, index) => {
-          stage[index].preview = value.image.replace(/1000X1000/, '90X1000X2');
-          stage[index].view = value.image.replace(/1000X1000/, '500X1000X2');
-          stageView.push(stage[index].view);
-        });
-
-        this.setData({stage, stageView});
-      }
-    });
-  },
-
-  loadVideo() {
-    wx.request({
-      url: `${api.m}/Movie/Video.api`,
-      data: {
-        pageIndex: 1,
-        movieId: this.data.id
-      },
-      success: res => {
-        // console.log('预告', res.data);
-
-        let video = res.data.videoList;
-
-        video = video.filter((item) => {
-          return item.type === 0;
-        }).slice(0, 5);
-
-        this.formatImgSize(video, {attr: 'image', origin: '235X132X4', clip: '235X132X2'}, (res) => {
-          this.setData({
-            video: res
-          });
-        });
-      }
-    });
-  },
-
-  loadComment() {
-    wx.request({
-      url: `${api.m}/Showtime/HotMovieComments.api`,
-      data: {
-        pageIndex: 1,
-        movieId: this.data.id
-      },
-      success: res => {
-        // console.log('评论', res.data);
-
-        let newComment = res.data.data.cts;
-
-        let {comment, commentShowNum, isCommentMore} = this.data;
-
-        if (newComment.length >= commentShowNum) {
-          isCommentMore = true;
-          newComment = newComment.slice(0, commentShowNum);
-        }
-
-        newComment.forEach((item) => {
-          item.cd = item.cd && this.formateDate(item.cd + '000' - (8 * 3600 * 1000));
-        });
-
-        comment = comment.concat(newComment);
-
-        this.setData({comment, isCommentMore});
-      }
-    });
-  },
-
-  onLoad(e) {
-    const id = e.id;
-
-    this.setData({id});
-
-    this.loadDetail(() => {
-      wx.setNavigationBarTitle({
-        title: this.data.preview.name
+    formatImgSize(preview, {attr: 'img', origin: '1280X720X2', clip: '200X720X2'}, res => {
+      this.setData({
+        preview: res
       });
     });
 
-    this.loadStage();
-    this.loadVideo();
-    this.loadComment();
+    formatImgSize(cast, {attr: 'img', origin: '1280X720X2', clip: '80X1000X2'}, res => {
+      this.setData({
+        cast: res
+      });
+    });
+
+    typeof callback === 'function' && callback();
+  },
+
+  formatStage(data) {
+    // console.log('剧照', data);
+
+    let stage = data.images.slice(0, 100);
+    let stageView = [];
+
+    stage = stage.filter(item => {
+      return item.imageSubtype === 6001;
+    });
+
+    stage = stage.slice(0, 10);
+
+    stage.forEach((value, index) => {
+      value.preview = value.image.replace(/1000X1000/, '90X1000X2');
+      value.view = value.image.replace(/1000X1000/, '500X1000X2');
+      stageView.push(value.view);
+    });
+
+    this.setData({stage, stageView});
+  },
+
+  formateVideo(data) {
+    // console.log('预告', data);
+
+    let video = data.videoList;
+
+    video = video.filter(item => {
+      return item.type === 0;
+    }).slice(0, 5);
+
+    formatImgSize(video, {attr: 'image', origin: '235X132X4', clip: '235X132X2'}, res => {
+      this.setData({
+        video: res
+      });
+    });
+  },
+
+  formatComment(data) {
+    // console.log('评论', data);
+
+    let newComment = data.data.cts;
+
+    let {comment, commentShowNum, isCommentMore} = this.data;
+
+    if (newComment.length >= commentShowNum) {
+      isCommentMore = true;
+      newComment = newComment.slice(0, commentShowNum);
+    }
+
+    newComment.forEach((item) => {
+      item.cd = item.cd && formatTime(item.cd + '000' - (8 * 3600 * 1000));
+    });
+
+    comment = comment.concat(newComment);
+
+    this.setData({comment, isCommentMore});
+  },
+
+  onLoad(e) {
+    const movieId = e.movieId;
+
+    this.setData({movieId});
+
+    service.getDetail({
+      locationId: 290,
+      movieId
+    })
+    .then(res => {
+      this.formatDetail(res, () => {
+        wx.setNavigationBarTitle({
+          title: this.data.preview.name
+        });
+      });
+
+      this.setData({loading: false});
+
+      return service.getStageList({
+        movieId
+      });
+    })
+    .then(res => {
+      this.formatStage(res);
+
+      return service.getVideoList({
+        pageIndex: 1,
+        movieId
+      });
+    })
+    .then(res => {
+      this.formateVideo(res);
+
+      return service.getHotMovieComments({
+        pageIndex: 1,
+        movieId
+      });
+    })
+    .then(res => {
+      this.formatComment(res);
+    });
   }
 });

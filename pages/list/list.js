@@ -1,5 +1,7 @@
 //list.js
-const api = getApp().globalData.api;
+
+import {formatImgSize} from '../../utils/util';
+import service from '../../utils/service';
 
 Page({
   data: {
@@ -18,76 +20,39 @@ Page({
     loading: true
   },
 
-  formatImgSize(list, img, callback) {
+  formatHotList(data) {
+    let list = data.ms;
 
-    const regExp = new RegExp(img.origin, 'g');
+    list.forEach(value => {
+      value.r = value.r === -1 ?  0 : value.r;
+    });
 
-    if (list[img.attr]) { // object
-      list[img.attr] = list[img.attr].replace(regExp, img.clip);
-    } else {
-      list.forEach((value, index) => {
-        value[img.attr] = value[img.attr] && value[img.attr].replace(regExp, img.clip);
+    formatImgSize(list, {attr: 'img', origin: '1280X720X2', clip: '200X720X2'}, res => {
+      this.setData({
+        list: res,
+        loading: false
       });
-    }
-
-    callback(list);
-  },
-
-  loadHotList() {
-
-    wx.request({
-      url: `${api.m}/Showtime/LocationMovies.api`,
-      data: {
-        locationId: 290
-      },
-      success: res => {
-        // console.log('正在热映', res.data);
-
-        let list = res.data.ms;
-
-        list.forEach((value, index) => {
-          value.r = value.r === -1 ?  0 : value.r;
-        });
-
-        this.formatImgSize(list, {attr: 'img', origin: '1280X720X2', clip: '200X720X2'}, (res) => {
-          this.setData({
-            list: res,
-            loading: false
-          });
-        });
-      }
     });
   },
 
-  loadComingList() {
+  formatComingList(data) {
+    let list = data.moviecomings;
 
-    wx.request({
-      url: `${api.m}/Movie/MovieComingNew.api`,
-      data: {
-        locationId: 290
-      },
-      success: res => {
-        // console.log('即将上映', res.data);
+    list.forEach(value => {
+      value.r = value.r === -1 ?  0 : value.r;
+      value.img = value.image;
+      value.tCn = value.title;
+      value.dN = value.director;
+      value.actors = `${value.actor1}${value.actor2 ? ' / ' : ''}${value.actor2 || ''}`;
+      value.movieType = value.type;
+      value.commonSpecial = '';
+    });
 
-        let list = res.data.moviecomings;
-
-        list.forEach((value, index) => {
-          value.r = value.r === -1 ?  0 : value.r;
-          value.img = value.image;
-          value.tCn = value.title;
-          value.dN = value.director;
-          value.actors = `${value.actor1}${value.actor2 ? ' / ' : ''}${value.actor2 || ''}`;
-          value.movieType = value.type;
-          value.commonSpecial = '';
-        });
-
-        this.formatImgSize(list, {attr: 'img', origin: '1280X720X2', clip: '200X720X2'}, (res) => {
-          this.setData({
-            list: res,
-            loading: false
-          });
-        });
-      }
+    formatImgSize(list, {attr: 'img', origin: '1280X720X2', clip: '200X720X2'}, res => {
+      this.setData({
+        list: res,
+        loading: false
+      });
     });
   },
 
@@ -95,7 +60,7 @@ Page({
     const id = e.currentTarget.dataset.id;
 
     wx.navigateTo({
-      url: `../detail/detail?id=${id}`
+      url: `../detail/detail?movieId=${id}`
     });
   },
 
@@ -108,6 +73,20 @@ Page({
       title: isHot ? '正在热映' : '即将上映'
     });
 
-    isHot ? this.loadHotList() : this.loadComingList();
+    isHot
+    ?
+    service.getHotList({
+      locationId: 290
+    })
+    .then(res => {
+      this.formatHotList(res);
+    })
+    :
+    service.getComingList({
+      locationId: 290
+    })
+    .then(res => {
+      this.formatComingList(res);
+    });
   }
 });
