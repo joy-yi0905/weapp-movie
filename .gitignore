@@ -6,5 +6,4 @@ output
 dest
 _build
 node_modules
-logo
-
+about-project-information
