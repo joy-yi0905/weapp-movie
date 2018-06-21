@@ -6,13 +6,13 @@ const formatTime = timestamp => {
   const hh = date.getHours();
   const mm = date.getMinutes();
 
-  return [MM, DD].map(fillZero).join('-') + ' ' + [hh, mm].map(fillZero).join(':');
+  return [MM, DD].map(padZero).join('-') + ' ' + [hh, mm].map(padZero).join(':');
 };
 
-const fillZero = str => {
+const padZero = (str, dig = 2) => {
   str = '' + str;
 
-  while(str.length < 2){
+  while(str.length < dig){
     str = '0' + str;
   }
 
