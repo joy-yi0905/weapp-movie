@@ -1,5 +1,9 @@
-<!--detail.wxml-->
-<view class="container" wx:if="{{!loading}}">
+<import src="../common/loading.wxml" />
+
+<template is="loading" wx:if="{{loading}}" />
+
+<!-- detail.wxml -->
+<view class="container" wx:else>
 
   <view class="movie">
     <view class="preview">
@@ -91,13 +95,4 @@
 
   </view>
 
-</view>
-
-<view class="loading" wx:if="{{loading}}">
-  <view class="loading-icon">
-    <view class="circle"></view>
-    <view class="circle"></view>
-    <view class="circle"></view>
-    <view class="circle"></view>
-  </view>
 </view>

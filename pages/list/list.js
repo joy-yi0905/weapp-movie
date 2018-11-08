@@ -1,6 +1,6 @@
 //list.js
 
-import {formatImgSize} from '../../utils/util';
+import { formatImgSize } from '../../utils/util';
 import service from '../../utils/service';
 
 Page({
@@ -24,10 +24,10 @@ Page({
     let list = data.ms;
 
     list.forEach(value => {
-      value.r = value.r === -1 ?  0 : value.r;
+      value.r = value.r === -1 ? 0 : value.r;
     });
 
-    formatImgSize(list, {attr: 'img', origin: '1280X720X2', clip: '200X720X2'}, res => {
+    formatImgSize(list, { attr: 'img', origin: '1280X720X2', clip: '200X720X2' }, res => {
       this.setData({
         list: res,
         loading: false
@@ -39,7 +39,7 @@ Page({
     let list = data.moviecomings;
 
     list.forEach(value => {
-      value.r = value.r === -1 ?  0 : value.r;
+      value.r = value.r === -1 ? 0 : value.r;
       value.img = value.image;
       value.tCn = value.title;
       value.dN = value.director;
@@ -48,7 +48,7 @@ Page({
       value.commonSpecial = '';
     });
 
-    formatImgSize(list, {attr: 'img', origin: '1280X720X2', clip: '200X720X2'}, res => {
+    formatImgSize(list, { attr: 'img', origin: '1280X720X2', clip: '200X720X2' }, res => {
       this.setData({
         list: res,
         loading: false
@@ -67,26 +67,26 @@ Page({
   onLoad: function (e) {
     const isHot = e.type === 'hot';
 
-    this.setData({isHot});
+    this.setData({ isHot });
 
     wx.setNavigationBarTitle({
       title: isHot ? '正在热映' : '即将上映'
     });
 
     isHot
-    ?
-    service.getHotList({
-      locationId: 290
-    })
-    .then(res => {
-      this.formatHotList(res);
-    })
-    :
-    service.getComingList({
-      locationId: 290
-    })
-    .then(res => {
-      this.formatComingList(res);
-    });
+      ?
+      service.getHotList({
+        locationId: 290
+      })
+        .then(res => {
+          this.formatHotList(res);
+        })
+      :
+      service.getComingList({
+        locationId: 290
+      })
+        .then(res => {
+          this.formatComingList(res);
+        });
   }
 });

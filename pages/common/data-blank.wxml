@@ -1,0 +1,6 @@
+<template name="data-blank">
+  <view class="data-blank">
+    <image src="../common/icon-data-blank.png"></image>
+    <view class="desc">{{desc}}</view>
+  </view>
+</template>

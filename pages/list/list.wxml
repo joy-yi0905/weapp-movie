@@ -1,8 +1,13 @@
-<!--list.wxml-->
-<view class="container" wx:if="{{!loading}}">
+<import src="../common/loading.wxml" />
+<import src="../common/data-blank.wxml" />
+
+<template is="loading" wx:if="{{loading}}" />
+
+<!-- list.wxml -->
+<view class="container" wx:else>
 
   <view class="movie-type-group">
-    <view class="list">
+    <view class="list" wx:if="{{list.length > 0}}">
       <view class="item" bindtap="gotoDetail" wx:for="{{list}}" wx:key="{{item.img}}" data-id="{{item.id}}">
         <view class="item-thumb">
           <image src="{{item.img}}"></image>
@@ -18,15 +23,8 @@
         <text class="score" wx:if="{{isHot}}">{{item.r}}</text>
       </view>
     </view>
+
+    <template is="data-blank" data="{{desc: '暂无数据~'}}" wx:else />
   </view>
 
-</view>
-
-<view class="loading" wx:if="{{loading}}">
-  <view class="loading-icon">
-    <view class="circle"></view>
-    <view class="circle"></view>
-    <view class="circle"></view>
-    <view class="circle"></view>
-  </view>
 </view>

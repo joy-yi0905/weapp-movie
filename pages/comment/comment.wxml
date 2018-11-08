@@ -1,37 +1,37 @@
-<!--comment.wxml-->
-<view class="container" wx:if="{{!loading}}">
+<import src="../common/loading.wxml" />
+<import src="../common/data-blank.wxml" />
+
+<template is="loading" wx:if="{{loading}}" />
+
+<!-- comment.wxml -->
+<view class="container" wx:else>
 
   <view class="comment">
-    <view class="list comment-list">
-      <view class="item" wx:for="{{comment}}" wx:key="{{item.caimg}}" id="{{item.id}}">
-        <view class="item-thumb">
-          <image src="{{item.caimg}}"></image>
-        </view>
-        <view class="item-main">
-          <view class="username">{{item.ca}}</view>
-          <view class="content">{{item.ce}}</view>
-          <text class="date">{{item.cd}}</text>
+
+    <block wx:if="{{comment.length > 0}}">
+      <view class="list comment-list">
+        <view class="item" wx:for="{{comment}}" wx:key="{{item.caimg}}" id="{{item.id}}">
+          <view class="item-thumb">
+            <image src="{{item.caimg}}"></image>
+          </view>
+          <view class="item-main">
+            <view class="username">{{item.ca}}</view>
+            <view class="content">{{item.ce}}</view>
+            <text class="date">{{item.cd}}</text>
+          </view>
         </view>
       </view>
-    </view>
-    <view class="scroll-loading" wx:if="{{loadingCommentMore}}">
-      <view class="loading-icon">
-        <view class="circle"></view>
-        <view class="circle"></view>
-        <view class="circle"></view>
-        <view class="circle"></view>
+      <view class="scroll-loading" wx:if="{{loadingCommentMore}}">
+        <view class="loading-icon">
+          <view class="circle"></view>
+          <view class="circle"></view>
+          <view class="circle"></view>
+          <view class="circle"></view>
+        </view>
       </view>
-    </view>
-    <view class="loading-tips" wx:else>没有更多了...</view>
-  </view>
+      <view class="loading-tips" wx:else>没有更多了...</view>
+    </block>
 
-</view>
-
-<view class="loading" wx:if="{{loading}}">
-  <view class="loading-icon">
-    <view class="circle"></view>
-    <view class="circle"></view>
-    <view class="circle"></view>
-    <view class="circle"></view>
+    <template is="data-blank" data="{{desc: '暂无数据~'}}" wx:else />
   </view>
 </view>

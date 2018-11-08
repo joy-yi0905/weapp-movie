@@ -1,5 +1,9 @@
 /**list.wxss**/
 
+.container {
+  background-color: #fff;
+}
+
 .list .item {
   position: relative;
   display: -webkit-box;

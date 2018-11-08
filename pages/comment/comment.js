@@ -1,6 +1,6 @@
 //comment.js
 
-import {formatTime} from '../../utils/util';
+import { formatTime } from '../../utils/util';
 import service from '../../utils/service';
 
 Page({
@@ -32,7 +32,7 @@ Page({
 
     let newComment = data.data.cts;
 
-    let {comment, pageIndex, commentLoadNum, loadingComment, loadingCommentMore} = this.data;
+    let { comment, pageIndex, commentLoadNum, loadingComment, loadingCommentMore } = this.data;
 
     newComment.forEach((item, index) => {
       item.cd = item.cd && formatTime(item.cd + '000' - (8 * 3600 * 1000));
@@ -51,36 +51,36 @@ Page({
     comment = comment.concat(newComment);
 
     (this.data.pageIndex === 1) &&
-    setTimeout(() => {
-      this.getRect('#item-10', rect => {
-        wx.pageScrollTo({
-          scrollTop: rect.top
+      setTimeout(() => {
+        this.getRect('#item-10', rect => {
+          wx.pageScrollTo({
+            scrollTop: rect.top
+          });
         });
-      });
-    }, 200);
+      }, 200);
 
-    this.setData({comment, loadingCommentMore, pageIndex, loadingComment, loading: false});
+    this.setData({ comment, loadingCommentMore, pageIndex, loadingComment, loading: false });
   },
 
   onReachBottom() {
-    let {loadingComment, loadingCommentMore, pageIndex, movieId} = this.data;
+    let { loadingComment, loadingCommentMore, pageIndex, movieId } = this.data;
 
     if (!loadingComment && loadingCommentMore) {
 
-      this.setData({loadingComment: true});
+      this.setData({ loadingComment: true });
 
       service.getHotMovieComments({
         pageIndex,
         movieId
       })
-      .then(res => {
-        this.formatComment(res);
-      });
+        .then(res => {
+          this.formatComment(res);
+        });
     }
   },
 
   onLoad: function (e) {
-    const {movieId, name} = e;
+    const { movieId, name } = e;
 
     wx.setNavigationBarTitle({
       title: `观影评论 - ${name}`
@@ -90,10 +90,10 @@ Page({
       pageIndex: this.data.pageIndex,
       movieId
     })
-    .then(res => {
-      this.formatComment(res);
-    });
+      .then(res => {
+        this.formatComment(res);
+      });
 
-    this.setData({movieId});
+    this.setData({ movieId });
   }
 });

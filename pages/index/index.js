@@ -1,6 +1,6 @@
 //index.js
 
-import {formatImgSize} from '../../utils/util';
+import { formatImgSize } from '../../utils/util';
 import service from '../../utils/service';
 
 Page({
@@ -30,10 +30,10 @@ Page({
     let list = data.ms;
 
     list.forEach(value => {
-      value.r = value.r === -1 ?  0 : value.r;
+      value.r = value.r === -1 ? 0 : value.r;
     });
 
-    formatImgSize(list, {attr: 'img', origin: '1280X720X2', clip: '200X720X2'}, res => {
+    formatImgSize(list, { attr: 'img', origin: '1280X720X2', clip: '200X720X2' }, res => {
       this.setData({
         hotList: res.slice(0, 8)
       });
@@ -46,7 +46,7 @@ Page({
     let list = data.moviecomings;
 
     list.forEach(value => {
-      value.r = value.r === -1 ?  0 : value.r;
+      value.r = value.r === -1 ? 0 : value.r;
       value.img = value.image;
       value.tCn = value.title;
       value.dN = value.director;
@@ -55,7 +55,7 @@ Page({
       value.commonSpecial = '';
     });
 
-    formatImgSize(list, {attr: 'img', origin: '1280X720X2', clip: '200X720X2'}, res => {
+    formatImgSize(list, { attr: 'img', origin: '1280X720X2', clip: '200X720X2' }, res => {
       this.setData({
         comingList: res.slice(0, 8)
       });
@@ -75,18 +75,18 @@ Page({
     service.getHotList({
       locationId: 290
     })
-    .then(res => {
-      this.formatHotList(res);
+      .then(res => {
+        this.formatHotList(res);
 
-      return service.getComingList({
-        locationId: 290
+        return service.getComingList({
+          locationId: 290
+        });
+      })
+      .then(res => {
+        this.formatComingList(res);
+
+        this.setData({ loading: false });
       });
-    })
-    .then(res => {
-      this.formatComingList(res);
-
-      this.setData({loading: false});
-    });
 
   }
 });
