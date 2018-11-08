@@ -6,7 +6,7 @@ import service from '../../utils/service';
 Page({
   data: {
     movieId: '',
-    comment: [
+    commentList: [
       // {
       //   caimg: 'http://img2.mtime.cn/images/default/head.gif',
       //   ca: 'M_1505181628072419891',
@@ -32,7 +32,7 @@ Page({
 
     let newComment = data.data.cts;
 
-    let { comment, pageIndex, commentLoadNum, loadingComment, loadingCommentMore } = this.data;
+    let { commentList, pageIndex, commentLoadNum, loadingComment, loadingCommentMore } = this.data;
 
     newComment.forEach((item, index) => {
       item.cd = item.cd && formatTime(item.cd + '000' - (8 * 3600 * 1000));
@@ -48,9 +48,10 @@ Page({
       pageIndex++;
     }
 
-    comment = comment.concat(newComment);
+    commentList = commentList.concat(newComment);
 
     (this.data.pageIndex === 1) &&
+      commentList.length &&
       setTimeout(() => {
         this.getRect('#item-10', rect => {
           wx.pageScrollTo({
@@ -59,7 +60,7 @@ Page({
         });
       }, 200);
 
-    this.setData({ comment, loadingCommentMore, pageIndex, loadingComment, loading: false });
+    this.setData({ commentList, loadingCommentMore, pageIndex, loadingComment, loading: false });
   },
 
   onReachBottom() {

@@ -8,9 +8,9 @@
 
   <view class="comment">
 
-    <block wx:if="{{comment.length > 0}}">
+    <block wx:if="{{commentList.length > 0}}">
       <view class="list comment-list">
-        <view class="item" wx:for="{{comment}}" wx:key="{{item.caimg}}" id="{{item.id}}">
+        <view class="item" wx:for="{{commentList}}" wx:key="{{item.caimg}}" id="{{item.id}}">
           <view class="item-thumb">
             <image src="{{item.caimg}}"></image>
           </view>

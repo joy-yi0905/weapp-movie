@@ -35,8 +35,19 @@ video {
 }
 
 .card .card-hd .more {
+  position: relative;
   color: #333;
   font-size: 26rpx;
+}
+
+.card .card-hd .more:after {
+  position: absolute;
+  left: -10rpx;
+  right: -10rpx;
+  top: -10rpx;
+  bottom: -10rpx;
+  content: '';
+  background-color: transparent;
 }
 
 .card .card-bd {
